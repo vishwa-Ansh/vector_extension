@@ -1,83 +1,533 @@
 const vscode = acquireVsCodeApi();
 
 const tabs = document.querySelectorAll(".tab");
-const runAgent = document.getElementById("run-agent");
-const rescan = document.getElementById("rescan");
-const settings = document.getElementById("settings");
+const agentTabs = document.querySelectorAll(".agent-tab");
+const primaryNavItems = document.querySelectorAll(".primary-nav-item");
 
-const workspaceStatus = document.getElementById("workspace-status");
+const runAgentButton =
+  document.getElementById("run-agent");
 
-const errorCount = document.getElementById("error-count");
-const logicCount = document.getElementById("logic-count");
-const packageCount = document.getElementById("package-count");
+const rescanButton =
+  document.getElementById("rescan");
 
-tabs.forEach((tab) => {
-  tab.addEventListener("click", () => {
-    tabs.forEach((item) => {
-      item.classList.remove("active");
-    });
+const settingsButton =
+  document.getElementById("settings");
 
-    tab.classList.add("active");
+const settingsPanel =
+  document.getElementById("settings-panel");
 
-    vscode.postMessage({
-      type: "tab",
-      tab: tab.dataset.tab
-    });
+const closeSettingsButton =
+  document.getElementById("close-settings");
+
+const themeSelect =
+  document.getElementById("theme-select");
+
+const accentSelect =
+  document.getElementById("accent-select");
+
+const compactMode =
+  document.getElementById("compact-mode");
+
+const showAgentStatus =
+  document.getElementById("show-agent-status");
+
+const workspaceStatus =
+  document.getElementById("workspace-status");
+
+const storedSettings =
+  localStorage.getItem("vector-o-settings");
+
+const defaultSettings = {
+  theme: "vscode-dark",
+  accent: "blue",
+  compact: false,
+  showAgentStatus: true
+};
+
+let settings = defaultSettings;
+
+if (storedSettings) {
+  try {
+    settings = {
+      ...defaultSettings,
+      ...JSON.parse(storedSettings)
+    };
+  } catch {
+    settings = defaultSettings;
+  }
+}
+
+function saveSettings() {
+  localStorage.setItem(
+    "vector-o-settings",
+    JSON.stringify(settings)
+  );
+}
+
+function applyTheme() {
+  document.body.dataset.theme =
+    settings.theme;
+
+  document.body.dataset.accent =
+    settings.accent;
+
+  document.body.classList.toggle(
+    "compact-mode",
+    settings.compact
+  );
+
+  const status =
+    document.querySelector(".agent-status");
+
+  if (status) {
+    status.style.display =
+      settings.showAgentStatus
+        ? ""
+        : "none";
+  }
+}
+
+function loadSettings() {
+  if (themeSelect) {
+    themeSelect.value =
+      settings.theme;
+  }
+
+  if (accentSelect) {
+    accentSelect.value =
+      settings.accent;
+  }
+
+  if (compactMode) {
+    compactMode.checked =
+      settings.compact;
+  }
+
+  if (showAgentStatus) {
+    showAgentStatus.checked =
+      settings.showAgentStatus;
+  }
+
+  applyTheme();
+}
+
+function activateAgentTab(tabName) {
+  agentTabs.forEach((tab) => {
+    tab.classList.toggle(
+      "active",
+      tab.dataset.tab === tabName
+    );
   });
-});
+}
 
-runAgent.addEventListener("click", () => {
-  workspaceStatus.textContent =
-    "Agent is analyzing your workspace...";
+function activatePrimaryItem(action) {
+  primaryNavItems.forEach((item) => {
+    item.classList.toggle(
+      "active",
+      item.dataset.action === action
+    );
+  });
+}
 
-  runAgent.disabled = true;
+function sendTab(tabName) {
+  activateAgentTab(tabName);
 
   vscode.postMessage({
-    type: "runAgent"
+    type: "tab",
+    tab: tabName
   });
-});
+}
 
-rescan.addEventListener("click", () => {
-  workspaceStatus.textContent =
-    "Scanning workspace...";
+function handlePrimaryAction(action) {
+  switch (action) {
 
-  vscode.postMessage({
-    type: "rescan"
-  });
-});
-
-settings.addEventListener("click", () => {
-  vscode.postMessage({
-    type: "settings"
-  });
-});
-
-window.addEventListener("message", (event) => {
-  const message = event.data;
-
-  switch (message.type) {
-    case "workspaceStatus":
-      workspaceStatus.textContent = message.value;
+    case "new-review":
+      activatePrimaryItem(action);
+      sendTab("review");
       break;
 
-    case "issues":
-      errorCount.textContent = message.errors ?? 0;
-      logicCount.textContent = message.logic ?? 0;
-      packageCount.textContent = message.packages ?? 0;
+    case "chat":
+      activatePrimaryItem(action);
+      sendTab("chat");
       break;
 
-    case "agentFinished":
-      workspaceStatus.textContent =
-        "Analysis completed.";
-
-      runAgent.disabled = false;
+    case "code-review":
+      activatePrimaryItem(action);
+      sendTab("review");
       break;
 
-    case "agentError":
-      workspaceStatus.textContent =
-        "Agent encountered an error.";
+    case "explain":
+      activatePrimaryItem(action);
+      sendTab("explain");
+      break;
 
-      runAgent.disabled = false;
+    case "bugs":
+      activatePrimaryItem(action);
+
+      vscode.postMessage({
+        type: "tab",
+        tab: "review",
+        mode: "bugs"
+      });
+
+      break;
+
+    case "refactor":
+      activatePrimaryItem(action);
+      sendTab("refactor");
+      break;
+
+    case "tests":
+      activatePrimaryItem(action);
+      sendTab("tests");
+      break;
+
+    case "documentation":
+      activatePrimaryItem(action);
+
+      vscode.postMessage({
+        type: "tab",
+        tab: "explain",
+        mode: "documentation"
+      });
+
       break;
   }
+}
+
+primaryNavItems.forEach((item) => {
+
+  item.addEventListener(
+    "click",
+    () => {
+
+      const action =
+        item.dataset.action;
+
+      if (!action) {
+        return;
+      }
+
+      handlePrimaryAction(action);
+    }
+  );
+
+});
+
+agentTabs.forEach((tab) => {
+
+  tab.addEventListener(
+    "click",
+    () => {
+
+      const tabName =
+        tab.dataset.tab;
+
+      if (!tabName) {
+        return;
+      }
+
+      sendTab(tabName);
+    }
+  );
+
+});
+
+tabs.forEach((tab) => {
+
+  tab.addEventListener(
+    "click",
+    () => {
+
+      const tabName =
+        tab.dataset.tab;
+
+      if (!tabName) {
+        return;
+      }
+
+      tabs.forEach((item) => {
+        item.classList.remove("active");
+      });
+
+      tab.classList.add("active");
+
+      sendTab(tabName);
+    }
+  );
+
+});
+
+if (runAgentButton) {
+
+  runAgentButton.addEventListener(
+    "click",
+    () => {
+
+      if (workspaceStatus) {
+        workspaceStatus.textContent =
+          "Analyzing";
+      }
+
+      vscode.postMessage({
+        type: "runAgent"
+      });
+
+    }
+  );
+
+}
+
+if (rescanButton) {
+
+  rescanButton.addEventListener(
+    "click",
+    () => {
+
+      if (workspaceStatus) {
+        workspaceStatus.textContent =
+          "Scanning";
+      }
+
+      vscode.postMessage({
+        type: "rescan"
+      });
+
+    }
+  );
+
+}
+
+if (settingsButton) {
+
+  settingsButton.addEventListener(
+    "click",
+    () => {
+
+      settingsPanel?.classList.remove(
+        "hidden"
+      );
+
+      vscode.postMessage({
+        type: "settings"
+      });
+
+    }
+  );
+
+}
+
+if (closeSettingsButton) {
+
+  closeSettingsButton.addEventListener(
+    "click",
+    () => {
+
+      settingsPanel?.classList.add(
+        "hidden"
+      );
+
+    }
+  );
+
+}
+
+if (themeSelect) {
+
+  themeSelect.addEventListener(
+    "change",
+    () => {
+
+      settings.theme =
+        themeSelect.value;
+
+      saveSettings();
+      applyTheme();
+
+      vscode.postMessage({
+        type: "settingsChanged",
+        settings
+      });
+
+    }
+  );
+
+}
+
+if (accentSelect) {
+
+  accentSelect.addEventListener(
+    "change",
+    () => {
+
+      settings.accent =
+        accentSelect.value;
+
+      saveSettings();
+      applyTheme();
+
+      vscode.postMessage({
+        type: "settingsChanged",
+        settings
+      });
+
+    }
+  );
+
+}
+
+if (compactMode) {
+
+  compactMode.addEventListener(
+    "change",
+    () => {
+
+      settings.compact =
+        compactMode.checked;
+
+      saveSettings();
+      applyTheme();
+
+      vscode.postMessage({
+        type: "settingsChanged",
+        settings
+      });
+
+    }
+  );
+
+}
+
+if (showAgentStatus) {
+
+  showAgentStatus.addEventListener(
+    "change",
+    () => {
+
+      settings.showAgentStatus =
+        showAgentStatus.checked;
+
+      saveSettings();
+      applyTheme();
+
+      vscode.postMessage({
+        type: "settingsChanged",
+        settings
+      });
+
+    }
+  );
+
+}
+
+window.addEventListener(
+  "message",
+  (event) => {
+
+    const message =
+      event.data;
+
+    if (!message) {
+      return;
+    }
+
+    if (
+      message.type ===
+      "workspaceStatus"
+    ) {
+
+      if (!workspaceStatus) {
+        return;
+      }
+
+      switch (message.status) {
+
+        case "scanning":
+          workspaceStatus.textContent =
+            "Scanning";
+          break;
+
+        case "analyzing":
+          workspaceStatus.textContent =
+            "Analyzing";
+          break;
+
+        case "completed":
+          workspaceStatus.textContent =
+            "Completed";
+          break;
+
+        case "ready":
+        default:
+          workspaceStatus.textContent =
+            "Ready";
+          break;
+      }
+
+    }
+
+    if (
+      message.type ===
+      "agentTabChanged"
+    ) {
+
+      activateAgentTab(
+        message.tab
+      );
+
+    }
+
+    if (
+      message.type ===
+      "activateTab"
+    ) {
+
+      activateAgentTab(
+        message.tab
+      );
+
+    }
+
+    if (
+      message.type ===
+      "agentFinished"
+    ) {
+
+      if (workspaceStatus) {
+        workspaceStatus.textContent =
+          "Completed";
+      }
+
+    }
+
+    if (
+      message.type ===
+      "agentError"
+    ) {
+
+      if (workspaceStatus) {
+        workspaceStatus.textContent =
+          "Error";
+      }
+
+    }
+
+    if (
+      message.type ===
+      "settingsOpened"
+    ) {
+
+      settingsPanel?.classList.remove(
+        "hidden"
+      );
+
+    }
+
+  }
+);
+
+loadSettings();
+
+vscode.postMessage({
+  type: "test"
 });

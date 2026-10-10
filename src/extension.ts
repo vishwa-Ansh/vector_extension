@@ -1,30 +1,55 @@
 import * as vscode from "vscode";
-import { SidebarProvider } from "./ui/SidebarProvider";
+import { AgentViewProvider } from "./agent/AgentViewProvider";
 
-export function activate(context: vscode.ExtensionContext) {
-  console.log("VECTOR-Ø: activate() started");
+export function activate(
+	context: vscode.ExtensionContext
+) {
+	const agentProvider =
+		new AgentViewProvider(
+			context.extensionUri
+		);
 
-  const provider = new SidebarProvider(context.extensionUri);
+	const agentView =
+		vscode.window.registerWebviewViewProvider(
+			"vector-o.agent",
+			agentProvider,
+			{
+				webviewOptions: {
+					retainContextWhenHidden: true
+				}
+			}
+		);
 
-  context.subscriptions.push(
-    vscode.window.registerWebviewViewProvider(
-      "vector-o.sidebar",
-      provider
-    )
-  );
+	const openAgent =
+		vscode.commands.registerCommand(
+			"vector-o.openAgent",
+			async () => {
+				try {
+					await vscode.commands.executeCommand(
+						"workbench.action.focusAuxiliaryBar"
+					);
+				} catch {
+					try {
+						await vscode.commands.executeCommand(
+							"workbench.action.toggleAuxiliaryBar"
+						);
+					} catch {
+						vscode.window.showErrorMessage(
+							"VECTOR-Ø: Unable to open Agent panel."
+						);
+					}
+				}
+			}
+		);
 
-  const openAgent = vscode.commands.registerCommand(
-    "vector-o.openAgent",
-    async () => {
-      await vscode.commands.executeCommand(
-        "workbench.view.extension.vector-o"
-      );
-    }
-  );
+	context.subscriptions.push(
+		agentView,
+		openAgent
+	);
 
-  context.subscriptions.push(openAgent);
-
-  console.log("VECTOR-Ø: provider registered");
+	console.log(
+		"VECTOR-Ø: AI Agent activated."
+	);
 }
 
-export function deactivate() {}
+export function deactivate() { }

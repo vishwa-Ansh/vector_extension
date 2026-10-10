@@ -3,8 +3,11 @@
 
 <head>
     <meta charset="UTF-8">
+
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
     <title>VECTOR-Ø</title>
+
     <link rel="stylesheet" href="style.css">
 </head>
 
@@ -17,50 +20,11 @@
             <div class="brand-area">
 
                 <div class="logo">
-
-                    <svg viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg">
-                        <defs>
-                            <linearGradient id="logoGlow" x1="0" y1="0" x2="1" y2="1">
-                                <stop offset="0%" stop-color="#ffffff" />
-
-                                <stop offset="45%" stop-color="#bdeeff" />
-
-                                <stop offset="100%" stop-color="#32bfff" />
-                            </linearGradient>
-
-                            <filter id="glow" x="-100%" y="-100%" width="300%" height="300%">
-                                <feGaussianBlur stdDeviation="3" result="blur" />
-
-                                <feMerge>
-                                    <feMergeNode in="blur" />
-                                    <feMergeNode in="SourceGraphic" />
-                                </feMerge>
-                            </filter>
-                        </defs>
-
-                        <ellipse cx="50" cy="50" rx="39" ry="17" fill="none" stroke="#18cfff" stroke-width="4"
-                            transform="rotate(-25 50 50)" opacity="0.9" filter="url(#glow)" />
-
-                        <ellipse cx="50" cy="50" rx="35" ry="14" fill="none" stroke="#ffffff" stroke-width="2"
-                            transform="rotate(-25 50 50)" opacity="0.7" />
-
-                        <circle cx="50" cy="48" r="25" fill="url(#logoGlow)" />
-
-                        <ellipse cx="42" cy="43" rx="6" ry="9" fill="#06101a" />
-
-                        <ellipse cx="59" cy="43" rx="6" ry="9" fill="#06101a" />
-
-                        <circle cx="43" cy="40" r="2" fill="#ffffff" />
-
-                        <circle cx="60" cy="40" r="2" fill="#ffffff" />
-
-                        <path d="M42 57 Q50 63 58 57" fill="none" stroke="#142b3b" stroke-width="3"
-                            stroke-linecap="round" />
-                    </svg>
-
+                    <img src="../assets/vector.png" alt="VECTOR-Ø">
                 </div>
 
-                <div>
+                <div class="brand-info">
+
                     <div class="brand-name">
                         VECTOR-Ø
                     </div>
@@ -68,297 +32,281 @@
                     <div class="brand-subtitle">
                         AI Coding Agent
                     </div>
+
                 </div>
 
             </div>
 
-            <div class="agent-status">
-                <span></span>
-                Agent Ready
+            <div class="agent-status" title="Agent Status">
+
+                <span class="status-dot"></span>
+
+                <span>
+                    Agent Ready
+                </span>
+
             </div>
 
         </header>
 
+        <main class="content">
 
-        <nav class="tabs">
+            <section class="primary-project">
 
-            <button class="tab active" data-tab="agent">
-                <span class="tab-icon">✦</span>
-                <span>Agent</span>
-            </button>
+                <div class="primary-project-header">
 
-            <button class="tab" data-tab="chat">
-                <span class="tab-icon">◯</span>
-                <span>Chat</span>
-            </button>
+                    <div>
 
-            <button class="tab" data-tab="explain">
-                <span class="tab-icon">◇</span>
-                <span>Explain</span>
-            </button>
-
-            <button class="tab" data-tab="refactor">
-                <span class="tab-icon">&lt;/&gt;</span>
-                <span>Refactor</span>
-            </button>
-
-            <button class="tab" data-tab="tests">
-                <span class="tab-icon">✓</span>
-                <span>Tests</span>
-            </button>
-
-        </nav>
-
-
-        <main>
-
-            <section class="workspace card">
-
-                <div class="workspace-header">
-
-                    <div class="workspace-info">
-
-                        <div class="folder-icon">
-                            <span></span>
+                        <div class="primary-section-title">
+                            Project
                         </div>
 
-                        <div>
-
-                            <div class="workspace-name">
-                                Trilok-On
-                            </div>
-
-                            <div id="workspace-status" class="workspace-status">
-                                Workspace ready
-                            </div>
-
-                            <div class="scan-info">
-                                Ready to scan workspace
-                            </div>
-
+                        <div class="primary-section-description">
+                            Current workspace
                         </div>
 
                     </div>
 
-                    <button id="rescan" class="rescan">
-                        <span>↻</span>
-                        Rescan
+                    <button id="rescan" class="icon-button" title="Rescan workspace">
+                        ↻
                     </button>
 
                 </div>
 
+                <div class="workspace-card">
 
-                <div class="issues">
+                    <div class="workspace-icon">
+                        ◈
+                    </div>
 
-                    <div class="issue">
+                    <div class="workspace-info">
 
-                        <div class="issue-number error">
-                            <span id="error-count">0</span>
+                        <div class="workspace-name">
+                            Trilok-On
                         </div>
 
-                        <div class="issue-content">
-                            <strong>Errors</strong>
-
-                            <span>
-                                Build or runtime errors
-                            </span>
-                        </div>
-
-                        <div class="issue-arrow">
-                            ›
+                        <div class="workspace-type">
+                            React Native
                         </div>
 
                     </div>
 
-
-                    <div class="issue">
-
-                        <div class="issue-number warning">
-                            <span id="logic-count">0</span>
-                        </div>
-
-                        <div class="issue-content">
-                            <strong>Logic Issues</strong>
-
-                            <span>
-                                Possible bugs or improvements
-                            </span>
-                        </div>
-
-                        <div class="issue-arrow">
-                            ›
-                        </div>
-
-                    </div>
-
-
-                    <div class="issue">
-
-                        <div class="issue-number package">
-                            <span id="package-count">0</span>
-                        </div>
-
-                        <div class="issue-content">
-                            <strong>Missing Packages</strong>
-
-                            <span>
-                                Required dependencies
-                            </span>
-                        </div>
-
-                        <div class="issue-arrow">
-                            ›
-                        </div>
-
+                    <div id="workspace-status" class="workspace-state">
+                        Ready
                     </div>
 
                 </div>
 
             </section>
 
+            <section class="primary-navigation">
 
-            <section class="run-area">
+                <div class="primary-section-title">
+                    Workspace
+                </div>
 
-                <button id="run-agent" class="run-agent">
+                <button class="primary-nav-item active" data-action="new-review">
 
-                    <div class="run-symbol">
-                        ▶
-                    </div>
+                    <span class="primary-nav-icon">
+                        +
+                    </span>
 
-                    <div class="run-text">
+                    <span>
+                        New Review
+                    </span>
 
-                        <strong>
-                            Run Agent
-                        </strong>
+                </button>
 
-                        <span>
-                            Analyze, fix and verify your project
-                        </span>
+                <button class="primary-nav-item" data-action="chat">
 
-                    </div>
+                    <span class="primary-nav-icon">
+                        ◌
+                    </span>
+
+                    <span>
+                        Chat
+                    </span>
+
+                </button>
+
+                <button class="primary-nav-item" data-action="code-review">
+
+                    <span class="primary-nav-icon">
+                        ✓
+                    </span>
+
+                    <span>
+                        Code Review
+                    </span>
+
+                </button>
+
+                <button class="primary-nav-item" data-action="explain">
+
+                    <span class="primary-nav-icon">
+                        ?
+                    </span>
+
+                    <span>
+                        Explain Code
+                    </span>
+
+                </button>
+
+                <button class="primary-nav-item" data-action="bugs">
+
+                    <span class="primary-nav-icon">
+                        !
+                    </span>
+
+                    <span>
+                        Find Bugs
+                    </span>
+
+                </button>
+
+                <button class="primary-nav-item" data-action="refactor">
+
+                    <span class="primary-nav-icon">
+                        ⟳
+                    </span>
+
+                    <span>
+                        Refactor
+                    </span>
+
+                </button>
+
+                <button class="primary-nav-item" data-action="tests">
+
+                    <span class="primary-nav-icon">
+                        ◫
+                    </span>
+
+                    <span>
+                        Generate Tests
+                    </span>
+
+                </button>
+
+                <button class="primary-nav-item" data-action="documentation">
+
+                    <span class="primary-nav-icon">
+                        ≡
+                    </span>
+
+                    <span>
+                        Documentation
+                    </span>
 
                 </button>
 
             </section>
 
+            <section class="primary-analysis">
 
-            <section class="workflow card">
-
-                <div class="workflow-title">
-                    What will happen?
+                <div class="primary-section-title">
+                    Quick Analysis
                 </div>
 
-                <div class="workflow-list">
+                <div class="quick-analysis-card">
 
-                    <div class="workflow-item">
+                    <div class="quick-analysis-icon">
+                        A
+                    </div>
 
-                        <div class="workflow-circle">
-                            1
+                    <div class="quick-analysis-content">
+
+                        <div class="quick-analysis-title">
+                            Full Workspace
                         </div>
 
-                        <div>
-                            <strong>
-                                Read all project files
-                            </strong>
-
-                            <span>
-                                Understand the workspace structure
-                            </span>
+                        <div class="quick-analysis-description">
+                            Analyze all project files
                         </div>
 
                     </div>
 
+                </div>
 
-                    <div class="workflow-item">
+                <button id="run-agent" class="run-button">
 
-                        <div class="workflow-circle">
-                            2
+                    <span>
+                        Run Agent
+                    </span>
+
+                    <span>
+                        →
+                    </span>
+
+                </button>
+
+            </section>
+
+            <section class="primary-context">
+
+                <div class="primary-section-title">
+                    Project Context
+                </div>
+
+                <div class="context-card">
+
+                    <div class="context-header">
+
+                        <div class="context-icon">
+                            ◈
                         </div>
 
                         <div>
-                            <strong>
-                                Find errors and logic issues
-                            </strong>
 
-                            <span>
-                                Analyze code and diagnostics
-                            </span>
+                            <div class="context-title">
+                                Trilok-On
+                            </div>
+
+                            <div class="context-subtitle">
+                                React Native
+                            </div>
+
                         </div>
 
                     </div>
 
+                    <div class="context-details">
 
-                    <div class="workflow-item">
-
-                        <div class="workflow-circle">
-                            3
-                        </div>
-
-                        <div>
-                            <strong>
-                                Fix code automatically
-                            </strong>
+                        <div class="context-row">
 
                             <span>
-                                Apply safe corrections
+                                Files
                             </span>
-                        </div>
-
-                    </div>
-
-
-                    <div class="workflow-item">
-
-                        <div class="workflow-circle">
-                            4
-                        </div>
-
-                        <div>
-                            <strong>
-                                Install missing packages
-                            </strong>
 
                             <span>
-                                Ask before modifying dependencies
+                                Workspace
                             </span>
+
                         </div>
 
-                    </div>
-
-
-                    <div class="workflow-item">
-
-                        <div class="workflow-circle">
-                            5
-                        </div>
-
-                        <div>
-                            <strong>
-                                Run checks
-                            </strong>
+                        <div class="context-row">
 
                             <span>
-                                TypeScript, ESLint and build
+                                Framework
                             </span>
-                        </div>
-
-                    </div>
-
-
-                    <div class="workflow-item last">
-
-                        <div class="workflow-circle">
-                            6
-                        </div>
-
-                        <div>
-                            <strong>
-                                Verify the fixes
-                            </strong>
 
                             <span>
-                                Confirm the project is healthy
+                                React Native
                             </span>
+
+                        </div>
+
+                        <div class="context-row">
+
+                            <span>
+                                Language
+                            </span>
+
+                            <span>
+                                TypeScript
+                            </span>
+
                         </div>
 
                     </div>
@@ -367,30 +315,159 @@
 
             </section>
 
+            <section class="primary-settings">
 
-            <button id="settings" class="settings">
+                <button id="settings" class="settings-button">
 
-                <div class="settings-icon">
-                    ⚙
-                </div>
-
-                <div class="settings-text">
-                    <strong>
-                        Agent Settings
-                    </strong>
+                    <span class="settings-icon">
+                        ⚙
+                    </span>
 
                     <span>
-                        Configure VECTOR-Ø
+                        Settings
                     </span>
-                </div>
 
-                <div class="settings-arrow">
-                    ›
-                </div>
+                    <span class="settings-arrow">
+                        →
+                    </span>
 
-            </button>
+                </button>
+
+            </section>
 
         </main>
+
+        <div id="settings-panel" class="settings-panel hidden">
+
+            <div class="settings-header">
+
+                <strong>
+                    VECTOR-Ø Settings
+                </strong>
+
+                <button id="close-settings" class="close-settings">
+                    ×
+                </button>
+
+            </div>
+
+            <div class="setting-item">
+
+                <label for="theme-select">
+                    Theme
+                </label>
+
+                <select id="theme-select">
+
+                    <option value="vscode-dark">
+                        VS Code Dark
+                    </option>
+
+                    <option value="vscode-light">
+                        VS Code Light
+                    </option>
+
+                    <option value="midnight">
+                        Midnight
+                    </option>
+
+                    <option value="high-contrast">
+                        High Contrast
+                    </option>
+
+                    <option value="ocean">
+                        Ocean
+                    </option>
+
+                    <option value="purple">
+                        Purple
+                    </option>
+
+                    <option value="emerald">
+                        Emerald
+                    </option>
+
+                </select>
+
+            </div>
+
+            <div class="setting-item">
+
+                <label for="accent-select">
+                    Accent Color
+                </label>
+
+                <select id="accent-select">
+
+                    <option value="blue">
+                        Blue
+                    </option>
+
+                    <option value="purple">
+                        Purple
+                    </option>
+
+                    <option value="green">
+                        Green
+                    </option>
+
+                    <option value="orange">
+                        Orange
+                    </option>
+
+                </select>
+
+            </div>
+
+            <div class="setting-item toggle-setting">
+
+                <div>
+
+                    <label>
+                        Compact Mode
+                    </label>
+
+                    <div class="setting-description">
+                        Reduce interface spacing.
+                    </div>
+
+                </div>
+
+                <input type="checkbox" id="compact-mode">
+
+            </div>
+
+            <div class="setting-item toggle-setting">
+
+                <div>
+
+                    <label>
+                        Agent Status
+                    </label>
+
+                    <div class="setting-description">
+                        Show agent status.
+                    </div>
+
+                </div>
+
+                <input type="checkbox" id="show-agent-status" checked>
+
+            </div>
+
+        </div>
+
+        <footer class="footer">
+
+            <span>
+                VECTOR-Ø
+            </span>
+
+            <span>
+                v0.0.1
+            </span>
+
+        </footer>
 
     </div>
 
