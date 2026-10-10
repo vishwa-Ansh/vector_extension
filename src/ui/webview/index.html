@@ -1,0 +1,401 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>VECTOR-Ø</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+
+    <div class="app">
+
+        <header class="topbar">
+
+            <div class="brand-area">
+
+                <div class="logo">
+
+                    <svg viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg">
+                        <defs>
+                            <linearGradient id="logoGlow" x1="0" y1="0" x2="1" y2="1">
+                                <stop offset="0%" stop-color="#ffffff" />
+
+                                <stop offset="45%" stop-color="#bdeeff" />
+
+                                <stop offset="100%" stop-color="#32bfff" />
+                            </linearGradient>
+
+                            <filter id="glow" x="-100%" y="-100%" width="300%" height="300%">
+                                <feGaussianBlur stdDeviation="3" result="blur" />
+
+                                <feMerge>
+                                    <feMergeNode in="blur" />
+                                    <feMergeNode in="SourceGraphic" />
+                                </feMerge>
+                            </filter>
+                        </defs>
+
+                        <ellipse cx="50" cy="50" rx="39" ry="17" fill="none" stroke="#18cfff" stroke-width="4"
+                            transform="rotate(-25 50 50)" opacity="0.9" filter="url(#glow)" />
+
+                        <ellipse cx="50" cy="50" rx="35" ry="14" fill="none" stroke="#ffffff" stroke-width="2"
+                            transform="rotate(-25 50 50)" opacity="0.7" />
+
+                        <circle cx="50" cy="48" r="25" fill="url(#logoGlow)" />
+
+                        <ellipse cx="42" cy="43" rx="6" ry="9" fill="#06101a" />
+
+                        <ellipse cx="59" cy="43" rx="6" ry="9" fill="#06101a" />
+
+                        <circle cx="43" cy="40" r="2" fill="#ffffff" />
+
+                        <circle cx="60" cy="40" r="2" fill="#ffffff" />
+
+                        <path d="M42 57 Q50 63 58 57" fill="none" stroke="#142b3b" stroke-width="3"
+                            stroke-linecap="round" />
+                    </svg>
+
+                </div>
+
+                <div>
+                    <div class="brand-name">
+                        VECTOR-Ø
+                    </div>
+
+                    <div class="brand-subtitle">
+                        AI Coding Agent
+                    </div>
+                </div>
+
+            </div>
+
+            <div class="agent-status">
+                <span></span>
+                Agent Ready
+            </div>
+
+        </header>
+
+
+        <nav class="tabs">
+
+            <button class="tab active" data-tab="agent">
+                <span class="tab-icon">✦</span>
+                <span>Agent</span>
+            </button>
+
+            <button class="tab" data-tab="chat">
+                <span class="tab-icon">◯</span>
+                <span>Chat</span>
+            </button>
+
+            <button class="tab" data-tab="explain">
+                <span class="tab-icon">◇</span>
+                <span>Explain</span>
+            </button>
+
+            <button class="tab" data-tab="refactor">
+                <span class="tab-icon">&lt;/&gt;</span>
+                <span>Refactor</span>
+            </button>
+
+            <button class="tab" data-tab="tests">
+                <span class="tab-icon">✓</span>
+                <span>Tests</span>
+            </button>
+
+        </nav>
+
+
+        <main>
+
+            <section class="workspace card">
+
+                <div class="workspace-header">
+
+                    <div class="workspace-info">
+
+                        <div class="folder-icon">
+                            <span></span>
+                        </div>
+
+                        <div>
+
+                            <div class="workspace-name">
+                                Trilok-On
+                            </div>
+
+                            <div id="workspace-status" class="workspace-status">
+                                Workspace ready
+                            </div>
+
+                            <div class="scan-info">
+                                Ready to scan workspace
+                            </div>
+
+                        </div>
+
+                    </div>
+
+                    <button id="rescan" class="rescan">
+                        <span>↻</span>
+                        Rescan
+                    </button>
+
+                </div>
+
+
+                <div class="issues">
+
+                    <div class="issue">
+
+                        <div class="issue-number error">
+                            <span id="error-count">0</span>
+                        </div>
+
+                        <div class="issue-content">
+                            <strong>Errors</strong>
+
+                            <span>
+                                Build or runtime errors
+                            </span>
+                        </div>
+
+                        <div class="issue-arrow">
+                            ›
+                        </div>
+
+                    </div>
+
+
+                    <div class="issue">
+
+                        <div class="issue-number warning">
+                            <span id="logic-count">0</span>
+                        </div>
+
+                        <div class="issue-content">
+                            <strong>Logic Issues</strong>
+
+                            <span>
+                                Possible bugs or improvements
+                            </span>
+                        </div>
+
+                        <div class="issue-arrow">
+                            ›
+                        </div>
+
+                    </div>
+
+
+                    <div class="issue">
+
+                        <div class="issue-number package">
+                            <span id="package-count">0</span>
+                        </div>
+
+                        <div class="issue-content">
+                            <strong>Missing Packages</strong>
+
+                            <span>
+                                Required dependencies
+                            </span>
+                        </div>
+
+                        <div class="issue-arrow">
+                            ›
+                        </div>
+
+                    </div>
+
+                </div>
+
+            </section>
+
+
+            <section class="run-area">
+
+                <button id="run-agent" class="run-agent">
+
+                    <div class="run-symbol">
+                        ▶
+                    </div>
+
+                    <div class="run-text">
+
+                        <strong>
+                            Run Agent
+                        </strong>
+
+                        <span>
+                            Analyze, fix and verify your project
+                        </span>
+
+                    </div>
+
+                </button>
+
+            </section>
+
+
+            <section class="workflow card">
+
+                <div class="workflow-title">
+                    What will happen?
+                </div>
+
+                <div class="workflow-list">
+
+                    <div class="workflow-item">
+
+                        <div class="workflow-circle">
+                            1
+                        </div>
+
+                        <div>
+                            <strong>
+                                Read all project files
+                            </strong>
+
+                            <span>
+                                Understand the workspace structure
+                            </span>
+                        </div>
+
+                    </div>
+
+
+                    <div class="workflow-item">
+
+                        <div class="workflow-circle">
+                            2
+                        </div>
+
+                        <div>
+                            <strong>
+                                Find errors and logic issues
+                            </strong>
+
+                            <span>
+                                Analyze code and diagnostics
+                            </span>
+                        </div>
+
+                    </div>
+
+
+                    <div class="workflow-item">
+
+                        <div class="workflow-circle">
+                            3
+                        </div>
+
+                        <div>
+                            <strong>
+                                Fix code automatically
+                            </strong>
+
+                            <span>
+                                Apply safe corrections
+                            </span>
+                        </div>
+
+                    </div>
+
+
+                    <div class="workflow-item">
+
+                        <div class="workflow-circle">
+                            4
+                        </div>
+
+                        <div>
+                            <strong>
+                                Install missing packages
+                            </strong>
+
+                            <span>
+                                Ask before modifying dependencies
+                            </span>
+                        </div>
+
+                    </div>
+
+
+                    <div class="workflow-item">
+
+                        <div class="workflow-circle">
+                            5
+                        </div>
+
+                        <div>
+                            <strong>
+                                Run checks
+                            </strong>
+
+                            <span>
+                                TypeScript, ESLint and build
+                            </span>
+                        </div>
+
+                    </div>
+
+
+                    <div class="workflow-item last">
+
+                        <div class="workflow-circle">
+                            6
+                        </div>
+
+                        <div>
+                            <strong>
+                                Verify the fixes
+                            </strong>
+
+                            <span>
+                                Confirm the project is healthy
+                            </span>
+                        </div>
+
+                    </div>
+
+                </div>
+
+            </section>
+
+
+            <button id="settings" class="settings">
+
+                <div class="settings-icon">
+                    ⚙
+                </div>
+
+                <div class="settings-text">
+                    <strong>
+                        Agent Settings
+                    </strong>
+
+                    <span>
+                        Configure VECTOR-Ø
+                    </span>
+                </div>
+
+                <div class="settings-arrow">
+                    ›
+                </div>
+
+            </button>
+
+        </main>
+
+    </div>
+
+    <script src="app.js"></script>
+
+</body>
+
+</html>
