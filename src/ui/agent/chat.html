@@ -1,0 +1,335 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="color-scheme" content="dark light">
+    <title>VECTOR-Ø</title>
+</head>
+
+<body class="chat-page">
+
+    <div class="chat-shell">
+
+        <header class="chat-header">
+
+            <div class="chat-title-group">
+
+                <button id="back-to-review" class="icon-button back-button" title="Back to Review"
+                    aria-label="Back to Review">
+                    <span>←</span>
+                </button>
+
+                <div class="brand">
+
+                    <div class="brand-icon">
+                        <img src="../assets/vector.png" alt="VECTOR-Ø">
+                    </div>
+
+                    <div class="chat-title">
+                        <div class="title-row">
+                            <h1>VECTOR-Ø</h1>
+                            <span class="online-dot"></span>
+                        </div>
+
+                        <span class="subtitle">
+                            AI Coding Agent
+                        </span>
+                    </div>
+
+                </div>
+
+            </div>
+
+
+            <div class="chat-actions">
+
+                <button id="new-chat" class="icon-button" title="New chat" aria-label="New chat">
+                    <span>＋</span>
+                </button>
+
+                <button id="chat-menu" class="icon-button" title="More" aria-label="More options">
+                    <span>⋯</span>
+                </button>
+
+            </div>
+
+        </header>
+
+
+        <main id="chat-messages" class="chat-messages">
+
+            <section id="chat-empty" class="chat-empty">
+
+                <div class="hero-icon">
+
+                    <div class="hero-glow"></div>
+
+                    <div class="hero-logo">
+                        <img src="../assets/vector.png" alt="VECTOR-Ø">
+                    </div>
+
+                </div>
+
+
+                <div class="welcome-copy">
+
+                    <div class="welcome-label">
+                        VECTOR-Ø AI
+                    </div>
+
+                    <h2>
+                        How can I help?
+                    </h2>
+
+                    <p>
+                        Ask about your code, project,
+                        errors or anything you're building.
+                    </p>
+
+                </div>
+
+
+                <div class="suggestion-grid">
+
+                    <button class="suggestion" data-prompt="Explain this file">
+
+                        <div class="suggestion-icon">
+                            ⌘
+                        </div>
+
+                        <div class="suggestion-content">
+                            <strong>
+                                Explain this file
+                            </strong>
+
+                            <small>
+                                Understand the code and logic
+                            </small>
+                        </div>
+
+                        <span class="suggestion-arrow">
+                            →
+                        </span>
+
+                    </button>
+
+
+                    <button class="suggestion" data-prompt="Find bugs in my code">
+
+                        <div class="suggestion-icon">
+                            ⌁
+                        </div>
+
+                        <div class="suggestion-content">
+                            <strong>
+                                Find bugs
+                            </strong>
+
+                            <small>
+                                Detect issues in your code
+                            </small>
+                        </div>
+
+                        <span class="suggestion-arrow">
+                            →
+                        </span>
+
+                    </button>
+
+
+                    <button class="suggestion" data-prompt="Fix the error in my code">
+
+                        <div class="suggestion-icon">
+                            ✦
+                        </div>
+
+                        <div class="suggestion-content">
+                            <strong>
+                                Fix an error
+                            </strong>
+
+                            <small>
+                                Find the cause and fix it
+                            </small>
+                        </div>
+
+                        <span class="suggestion-arrow">
+                            →
+                        </span>
+
+                    </button>
+
+
+                    <button class="suggestion" data-prompt="Write tests for this code">
+
+                        <div class="suggestion-icon">
+                            ✓
+                        </div>
+
+                        <div class="suggestion-content">
+                            <strong>
+                                Write tests
+                            </strong>
+
+                            <small>
+                                Generate useful test cases
+                            </small>
+                        </div>
+
+                        <span class="suggestion-arrow">
+                            →
+                        </span>
+
+                    </button>
+
+                </div>
+
+            </section>
+
+        </main>
+
+
+        <div id="typing-indicator" class="typing-indicator hidden">
+
+            <div class="typing-avatar">
+
+                <img src="../assets/vector.png" alt="VECTOR-Ø">
+
+            </div>
+
+            <div class="typing-content">
+
+                <div class="typing-dots">
+                    <span></span>
+                    <span></span>
+                    <span></span>
+                </div>
+
+                <span>
+                    VECTOR-Ø is thinking...
+                </span>
+
+            </div>
+
+        </div>
+
+
+        <footer class="chat-footer">
+
+            <div class="context-bar">
+
+                <div class="context-item">
+
+                    <div class="context-icon">
+                        ⌁
+                    </div>
+
+                    <div class="context-info">
+
+                        <span class="context-label">
+                            CONTEXT
+                        </span>
+
+                        <span id="context-file">
+                            Current file
+                        </span>
+
+                    </div>
+
+                </div>
+
+
+                <button id="clear-context" class="context-clear" title="Remove context" aria-label="Remove context">
+                    ×
+                </button>
+
+            </div>
+
+
+            <div class="composer">
+
+                <div class="composer-main">
+
+                    <textarea id="chat-input" rows="1" placeholder="Ask VECTOR-Ø anything..." spellcheck="false"
+                        autocomplete="off"></textarea>
+
+                </div>
+
+
+                <div class="composer-bottom">
+
+                    <div class="composer-tools">
+
+                        <button id="attach-code" class="composer-button" title="Add code context"
+                            aria-label="Add code context">
+                            ＋
+                        </button>
+
+                        <button id="mention-file" class="composer-button" title="Mention file"
+                            aria-label="Mention file">
+                            @
+                        </button>
+
+                    </div>
+
+
+                    <div class="composer-status">
+                        <span class="status-dot"></span>
+                        Ready
+                    </div>
+
+
+                    <button id="send-message" class="send-button" title="Send message" aria-label="Send message"
+                        disabled>
+                        ↑
+                    </button>
+
+                </div>
+
+            </div>
+
+
+            <div class="composer-hint">
+
+                <span>
+                    <kbd>Enter</kbd>
+                    to send
+                </span>
+
+                <span>
+                    <kbd>Shift</kbd>
+                    +
+                    <kbd>Enter</kbd>
+                    new line
+                </span>
+
+            </div>
+
+        </footer>
+
+    </div>
+
+
+    <div id="chat-menu-panel" class="chat-menu-panel hidden">
+
+        <div class="menu-header">
+            <span>Conversation</span>
+        </div>
+
+        <button data-action="clear">
+            <span class="menu-icon">⌫</span>
+            <span>Clear conversation</span>
+        </button>
+
+        <button data-action="export">
+            <span class="menu-icon">↗</span>
+            <span>Export conversation</span>
+        </button>
+
+    </div>
+
+</body>
+
+</html>

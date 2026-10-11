@@ -6,6 +6,9 @@
 
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
+    <meta http-equiv="Content-Security-Policy"
+        content="default-src 'none'; img-src ${webview.cspSource} https:; style-src ${webview.cspSource} 'unsafe-inline'; script-src ${webview.cspSource} 'unsafe-inline';">
+
     <title>VECTOR-Ø</title>
 
     <link rel="stylesheet" href="style.css">
@@ -15,434 +18,45 @@
 
     <div class="agent">
 
-        <header class="header">
+        <main class="main-panel">
 
-            <div class="brand">
 
-                <div class="brand-mark">
-                    <img src="../assets/vector.png" alt="VECTOR-Ø">
-                </div>
+            <section class="agent-header">
 
-                <div class="brand-text">
+                <div class="agent-brand">
 
-                    <div class="brand-name">
-                        VECTOR-Ø
+                    <div class="logo-container">
+
+                        <img src="../assets/vector.png" alt="VECTOR-Ø">
+
                     </div>
 
-                    <div class="brand-subtitle">
-                        AI Coding Agent
-                    </div>
+                    <div class="brand-content">
 
-                </div>
-
-            </div>
-
-            <div class="header-actions">
-
-                <button id="refresh" class="icon-button" title="Run analysis" aria-label="Run analysis">
-                    ↻
-                </button>
-
-                <button id="more-header" class="icon-button" title="More options" aria-label="More options">
-                    ⋯
-                </button>
-
-            </div>
-
-        </header>
-
-
-        <section class="intro">
-
-            <h1>
-                AI Coding Agent
-            </h1>
-
-            <p>
-                Analyze, understand and improve your codebase.
-            </p>
-
-        </section>
-
-
-        <nav class="tabs">
-
-            <button class="tab active" data-tab="review">
-                Review
-            </button>
-
-            <button class="tab" data-tab="chat">
-                Chat
-            </button>
-
-            <button class="tab" data-tab="explain">
-                Explain
-            </button>
-
-            <button class="tab" data-tab="refactor">
-                Refactor
-            </button>
-
-            <button class="tab" data-tab="tests">
-                Tests
-            </button>
-
-        </nav>
-
-
-        <main class="content">
-
-
-            <section class="analysis card">
-
-                <div class="section-heading">
-
-                    <div>
-
-                        <div class="section-title">
-                            Code Analysis
+                        <div class="brand-title">
+                            VECTOR-Ø
                         </div>
 
-                        <div id="analysis-time" class="section-description">
-                            Completed in 2.3s
+                        <div class="brand-subtitle">
+                            AI Coding Agent for Developers
                         </div>
-
-                    </div>
-
-                    <div id="analysis-status" class="status completed">
-
-                        <span class="status-dot"></span>
-
-                        <span>
-                            Completed
-                        </span>
 
                     </div>
 
                 </div>
 
 
-                <div class="stats">
+                <div class="header-controls">
 
-                    <div class="stat error">
-
-                        <div class="stat-value">
-                            2
-                        </div>
-
-                        <div class="stat-label">
-                            Errors
-                        </div>
-
-                    </div>
-
-
-                    <div class="stat warning">
-
-                        <div class="stat-value">
-                            3
-                        </div>
-
-                        <div class="stat-label">
-                            Warnings
-                        </div>
-
-                    </div>
-
-
-                    <div class="stat suggestion">
-
-                        <div class="stat-value">
-                            2
-                        </div>
-
-                        <div class="stat-label">
-                            Suggestions
-                        </div>
-
-                    </div>
-
-                </div>
-
-            </section>
-
-
-            <section class="issues">
-
-                <div class="section-heading">
-
-                    <div>
-
-                        <div class="section-title">
-                            Issues Found
-                        </div>
-
-                        <div class="section-description">
-                            <span id="issue-count">
-                                5
-                            </span>
-                            issues
-                            <span class="separator">
-                                ·
-                            </span>
-                            <span id="critical-count">
-                                2
-                            </span>
-                            critical
-                        </div>
-
-                    </div>
-
-                    <button id="scan" class="text-button">
-                        Scan
+                    <button id="refresh" class="control-button" title="Run analysis">
+                        ↻
                     </button>
 
-                </div>
-
-
-                <div class="issue-list">
-
-
-                    <button class="issue critical selected" data-issue="null-reference">
-
-                        <div class="issue-indicator">
-                            ×
-                        </div>
-
-                        <div class="issue-main">
-
-                            <div class="issue-title">
-                                Possible null reference
-                            </div>
-
-                            <div class="issue-location">
-                                App.tsx
-                                <span>
-                                    ·
-                                </span>
-                                line 42
-                            </div>
-
-                        </div>
-
-                        <div class="issue-meta">
-                            Critical
-                        </div>
-
-                        <div class="issue-arrow">
-                            ›
-                        </div>
-
+                    <button id="new-agent" class="control-button" title="New analysis">
+                        +
                     </button>
 
-
-                    <button class="issue critical" data-issue="undefined-variable">
-
-                        <div class="issue-indicator">
-                            ×
-                        </div>
-
-                        <div class="issue-main">
-
-                            <div class="issue-title">
-                                Undefined variable
-                            </div>
-
-                            <div class="issue-location">
-                                api.ts
-                                <span>
-                                    ·
-                                </span>
-                                line 87
-                            </div>
-
-                        </div>
-
-                        <div class="issue-meta">
-                            Critical
-                        </div>
-
-                        <div class="issue-arrow">
-                            ›
-                        </div>
-
-                    </button>
-
-
-                    <button class="issue warning" data-issue="rerender">
-
-                        <div class="issue-indicator">
-                            !
-                        </div>
-
-                        <div class="issue-main">
-
-                            <div class="issue-title">
-                                Unnecessary re-render
-                            </div>
-
-                            <div class="issue-location">
-                                Home.tsx
-                                <span>
-                                    ·
-                                </span>
-                                line 61
-                            </div>
-
-                        </div>
-
-                        <div class="issue-meta">
-                            Warning
-                        </div>
-
-                        <div class="issue-arrow">
-                            ›
-                        </div>
-
-                    </button>
-
-
-                    <button class="issue warning" data-issue="dependency">
-
-                        <div class="issue-indicator">
-                            !
-                        </div>
-
-                        <div class="issue-main">
-
-                            <div class="issue-title">
-                                Missing dependency
-                            </div>
-
-                            <div class="issue-location">
-                                useEffect
-                                <span>
-                                    ·
-                                </span>
-                                line 24
-                            </div>
-
-                        </div>
-
-                        <div class="issue-meta">
-                            Warning
-                        </div>
-
-                        <div class="issue-arrow">
-                            ›
-                        </div>
-
-                    </button>
-
-
-                    <button class="issue suggestion" data-issue="conditional">
-
-                        <div class="issue-indicator">
-                            i
-                        </div>
-
-                        <div class="issue-main">
-
-                            <div class="issue-title">
-                                Simplify conditional logic
-                            </div>
-
-                            <div class="issue-location">
-                                utils.ts
-                                <span>
-                                    ·
-                                </span>
-                                line 19
-                            </div>
-
-                        </div>
-
-                        <div class="issue-meta">
-                            Suggestion
-                        </div>
-
-                        <div class="issue-arrow">
-                            ›
-                        </div>
-
-                    </button>
-
-
-                </div>
-
-            </section>
-
-
-            <section class="fix card">
-
-                <div class="section-heading">
-
-                    <div>
-
-                        <div class="section-title">
-                            Suggested Fix
-                        </div>
-
-                        <div class="section-description">
-                            VECTOR-Ø generated solution
-                        </div>
-
-                    </div>
-
-                    <button id="copy-fix" class="copy-button" title="Copy fix">
-                        Copy
-                    </button>
-
-                </div>
-
-
-                <div class="diff">
-
-                    <div class="diff-line removed">
-
-                        <span class="diff-symbol">
-                            −
-                        </span>
-
-                        <code>
-              const data = user.profile.name;
-            </code>
-
-                    </div>
-
-
-                    <div class="diff-line added">
-
-                        <span class="diff-symbol">
-                            +
-                        </span>
-
-                        <code>
-              const data = user?.profile?.name ?? "";
-            </code>
-
-                    </div>
-
-                </div>
-
-
-                <div class="fix-actions">
-
-                    <button id="apply-fix" class="primary-button">
-                        <span class="button-icon">
-                            ✦
-                        </span>
-
-                        Apply Fix
-                    </button>
-
-
-                    <button id="explain" class="secondary-button">
-                        Explain
-                    </button>
-
-
-                    <button id="more-options" class="secondary-button square" title="More options">
+                    <button id="menu" class="control-button menu-button" title="More">
                         ⋯
                     </button>
 
@@ -451,32 +65,550 @@
             </section>
 
 
-            <section class="agent-footer-card">
+            <div id="menu-panel" class="menu-panel hidden">
 
-                <div class="footer-agent">
+                <button class="menu-item" data-menu="theme">
+                    <span>◐</span>
+                    <span>Theme</span>
+                    <span class="menu-arrow">›</span>
+                </button>
 
-                    <div class="footer-mark">
-                        V
-                    </div>
+                <button class="menu-item" data-menu="settings">
+                    <span>⚙</span>
+                    <span>Settings</span>
+                    <span class="menu-arrow">›</span>
+                </button>
 
-                    <div>
+                <button class="menu-item" data-menu="history">
+                    <span>▣</span>
+                    <span>Clear History</span>
+                </button>
 
-                        <div class="footer-title">
-                            VECTOR-Ø Agent
+                <button class="menu-item" data-menu="export">
+                    <span>⇧</span>
+                    <span>Export Report</span>
+                </button>
+
+                <button class="menu-item" data-menu="about">
+                    <span>ⓘ</span>
+                    <span>About VECTOR-Ø</span>
+                </button>
+
+            </div>
+
+
+          <div
+  id="theme-panel"
+  class="theme-panel hidden"
+>
+
+  <div class="theme-heading">
+    Appearance
+  </div>
+
+  <button
+    class="theme-option active"
+    data-theme="dark"
+  >
+    <span>☾</span>
+    <span>Dark</span>
+    <span>✓</span>
+  </button>
+
+  <button
+    class="theme-option"
+    data-theme="light"
+  >
+    <span>☼</span>
+    <span>Light</span>
+    <span></span>
+  </button>
+
+  <button
+    class="theme-option"
+    data-theme="system"
+  >
+    <span>▣</span>
+    <span>System</span>
+    <span></span>
+  </button>
+
+  <div class="theme-divider"></div>
+
+  <div class="theme-heading">
+    VS Code Themes
+  </div>
+
+  <button
+    class="theme-option"
+    data-theme="vscode-dark"
+  >
+    <span>◆</span>
+    <span>VS Code Dark+</span>
+    <span></span>
+  </button>
+
+  <button
+    class="theme-option"
+    data-theme="vscode-light"
+  >
+    <span>◇</span>
+    <span>VS Code Light+</span>
+    <span></span>
+  </button>
+
+  <button
+    class="theme-option"
+    data-theme="vscode-contrast"
+  >
+    <span>◈</span>
+    <span>VS Code High Contrast</span>
+    <span></span>
+  </button>
+
+</div>
+
+            <nav class="tabs">
+
+                <button class="tab active" data-tab="review">
+                    Review
+                </button>
+
+                <button class="tab" data-tab="chat">
+                    Chat
+                </button>
+
+                <button class="tab" data-tab="explain">
+                    Explain
+                </button>
+
+                <button class="tab" data-tab="refactor">
+                    Refactor
+                </button>
+
+                <button class="tab" data-tab="tests">
+                    Tests
+                </button>
+
+            </nav>
+
+
+            <div class="content">
+
+
+                <section class="analysis-card">
+
+                    <div class="analysis-header">
+
+                        <div class="analysis-title">
+
+                            <div class="analysis-icon">
+                                A
+                            </div>
+
+                            <span>
+                                Code Analysis
+                            </span>
+
                         </div>
 
-                        <div class="footer-description">
-                            Ready to improve your code.
+                        <div id="analysis-status" class="analysis-status">
+
+                            <span class="status-check">
+                                ✓
+                            </span>
+
+                            <span>
+                                Completed in 2.3s
+                            </span>
+
                         </div>
 
                     </div>
 
-                </div>
 
-                <div class="online-indicator" title="Agent online"></div>
+                    <div class="analysis-stats">
 
-            </section>
+                        <div class="analysis-stat error">
 
+                            <div class="stat-top">
+
+                                <span class="stat-dot"></span>
+
+                                <strong>
+                                    2 Errors
+                                </strong>
+
+                            </div>
+
+                            <span class="stat-description">
+                                Need to be fixed
+                            </span>
+
+                        </div>
+
+
+                        <div class="analysis-stat warning">
+
+                            <div class="stat-top">
+
+                                <span class="stat-dot"></span>
+
+                                <strong>
+                                    3 Warnings
+                                </strong>
+
+                            </div>
+
+                            <span class="stat-description">
+                                Can be improved
+                            </span>
+
+                        </div>
+
+
+                        <div class="analysis-stat suggestion">
+
+                            <div class="stat-top">
+
+                                <span class="stat-dot"></span>
+
+                                <strong>
+                                    2 Suggestions
+                                </strong>
+
+                            </div>
+
+                            <span class="stat-description">
+                                Best practices
+                            </span>
+
+                        </div>
+
+                    </div>
+
+                </section>
+
+
+                <section class="issues-section">
+
+                    <div class="section-header">
+
+                        <div class="section-title-group">
+
+                            <div class="issues-title">
+                                <span class="issues-symbol">
+                                    ⚒
+                                </span>
+
+                                Issues Found
+                            </div>
+
+                            <div class="issues-count">
+                                <span id="issue-count">
+                                    5
+                                </span>
+                                issues
+                                <span>•</span>
+                                <span id="critical-count">
+                                    2
+                                </span>
+                                critical
+                            </div>
+
+                        </div>
+
+                    </div>
+
+
+                    <div class="issue-list">
+
+
+                        <button class="issue selected critical" data-issue="null-reference">
+
+                            <div class="issue-icon">
+                                !
+                            </div>
+
+                            <div class="issue-content">
+
+                                <div class="issue-name">
+                                    'error' is of type 'unknown'
+                                </div>
+
+                                <div class="issue-description">
+                                    Use proper type checking for error object
+                                </div>
+
+                            </div>
+
+                            <div class="issue-location">
+                                Line 12
+                            </div>
+
+                            <div class="issue-arrow">
+                                ›
+                            </div>
+
+                        </button>
+
+
+                        <button class="issue warning" data-issue="return-type">
+
+                            <div class="issue-icon">
+                                !
+                            </div>
+
+                            <div class="issue-content">
+
+                                <div class="issue-name">
+                                    Missing return type on function
+                                </div>
+
+                                <div class="issue-description">
+                                    Add explicit return type
+                                </div>
+
+                            </div>
+
+                            <div class="issue-location">
+                                Line 5
+                            </div>
+
+                            <div class="issue-arrow">
+                                ›
+                            </div>
+
+                        </button>
+
+
+                        <button class="issue suggestion" data-issue="api">
+
+                            <div class="issue-icon">
+                                i
+                            </div>
+
+                            <div class="issue-content">
+
+                                <div class="issue-name">
+                                    API call not optimized
+                                </div>
+
+                                <div class="issue-description">
+                                    Consider adding loading state cleanup
+                                </div>
+
+                            </div>
+
+                            <div class="issue-location">
+                                Line 8
+                            </div>
+
+                            <div class="issue-arrow">
+                                ›
+                            </div>
+
+                        </button>
+
+
+                        <button class="issue suggestion" data-issue="any-type">
+
+                            <div class="issue-icon">
+                                i
+                            </div>
+
+                            <div class="issue-content">
+
+                                <div class="issue-name">
+                                    Use of any type
+                                </div>
+
+                                <div class="issue-description">
+                                    Consider using proper TypeScript types
+                                </div>
+
+                            </div>
+
+                            <div class="issue-location">
+                                Line 4
+                            </div>
+
+                            <div class="issue-arrow">
+                                ›
+                            </div>
+
+                        </button>
+
+
+                        <button class="issue suggestion" data-issue="component">
+
+                            <div class="issue-icon">
+                                i
+                            </div>
+
+                            <div class="issue-content">
+
+                                <div class="issue-name">
+                                    Component can be broken down
+                                </div>
+
+                                <div class="issue-description">
+                                    Consider splitting into smaller components
+                                </div>
+
+                            </div>
+
+                            <div class="issue-location">
+                                Line 24
+                            </div>
+
+                            <div class="issue-arrow">
+                                ›
+                            </div>
+
+                        </button>
+
+
+                    </div>
+
+                </section>
+
+
+                <section class="fix-section">
+
+                    <div class="fix-header">
+
+                        <div class="fix-title">
+                            Suggested Fix
+                            <span id="fix-line">
+                                (Line 12)
+                            </span>
+                        </div>
+
+                        <button id="copy-fix" class="copy-button" title="Copy fix">
+                            ◧
+                        </button>
+
+                    </div>
+
+
+                    <div class="diff">
+
+                        <div class="diff-line removed">
+
+                            <span class="diff-symbol">
+                                −
+                            </span>
+
+                            <code>
+                console.error("Error fetching data:", error);
+              </code>
+
+                        </div>
+
+
+                        <div class="diff-line added">
+
+                            <span class="diff-symbol">
+                                +
+                            </span>
+
+                            <code>
+                if (error instanceof Error) {
+              </code>
+
+                        </div>
+
+
+                        <div class="diff-line added">
+
+                            <span class="diff-symbol">
+                                +
+                            </span>
+
+                            <code class="indent">
+                console.error("Error fetching data:", error.message);
+              </code>
+
+                        </div>
+
+
+                        <div class="diff-line added">
+
+                            <span class="diff-symbol">
+                                +
+                            </span>
+
+                            <code>
+                } else {
+              </code>
+
+                        </div>
+
+
+                        <div class="diff-line added">
+
+                            <span class="diff-symbol">
+                                +
+                            </span>
+
+                            <code class="indent">
+                console.error("Error fetching data:", error);
+              </code>
+
+                        </div>
+
+
+                        <div class="diff-line added">
+
+                            <span class="diff-symbol">
+                                +
+                            </span>
+
+                            <code>
+                }
+              </code>
+
+                        </div>
+
+                    </div>
+
+
+                    <div class="fix-actions">
+
+                        <button id="apply-fix" class="apply-button">
+                            <span>
+                                ✣
+                            </span>
+
+                            Apply Fix
+                        </button>
+
+
+                        <button id="explain" class="explain-button">
+                            <span>
+                                ◉
+                            </span>
+
+                            Explain
+                        </button>
+
+
+                        <button id="more-options" class="more-button">
+                            ⋯
+
+                            <span>
+                                More Options
+                            </span>
+
+                        </button>
+
+                    </div>
+
+                </section>
+
+
+            </div>
 
         </main>
 

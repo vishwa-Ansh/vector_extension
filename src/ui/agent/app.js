@@ -9,8 +9,20 @@ const issues =
 const refreshButton =
   document.getElementById("refresh");
 
-const scanButton =
-  document.getElementById("scan");
+const newAgentButton =
+  document.getElementById("new-agent");
+
+const menuButton =
+  document.getElementById("menu");
+
+const fullscreenButton =
+  document.getElementById("fullscreen");
+
+const closeButton =
+  document.getElementById("close");
+
+const copyFixButton =
+  document.getElementById("copy-fix");
 
 const applyFixButton =
   document.getElementById("apply-fix");
@@ -21,202 +33,513 @@ const explainButton =
 const moreOptionsButton =
   document.getElementById("more-options");
 
-const headerMoreButton =
-  document.getElementById("more-header");
+const menuPanel =
+  document.getElementById("menu-panel");
 
-const copyFixButton =
-  document.getElementById("copy-fix");
+const themePanel =
+  document.getElementById("theme-panel");
+
+const themeOptions =
+  document.querySelectorAll(".theme-option");
 
 const analysisStatus =
-  document.getElementById(
-    "analysis-status"
-  );
-
-const analysisTime =
-  document.getElementById(
-    "analysis-time"
-  );
+  document.getElementById("analysis-status");
 
 const issueCount =
-  document.getElementById(
-    "issue-count"
-  );
+  document.getElementById("issue-count");
 
 const criticalCount =
-  document.getElementById(
-    "critical-count"
-  );
+  document.getElementById("critical-count");
+
+const fixLine =
+  document.getElementById("fix-line");
 
 const toast =
   document.getElementById("toast");
 
 const toastMessage =
-  document.getElementById(
-    "toast-message"
-  );
-
+  document.getElementById("toast-message");
 
 let activeTab = "review";
 
 let selectedIssue =
   "null-reference";
 
+let toastTimer;
+
+
+/* =========================
+   ISSUE DATA
+========================= */
 
 const issueData = {
-
   "null-reference": {
     title:
-      "Possible null reference",
+      "'error' is of type 'unknown'",
+
+    description:
+      "Use proper type checking for error object",
+
+    line: 12,
+
+    severity:
+      "Critical",
 
     file:
       "App.tsx",
 
-    line:
-      42,
-
-    severity:
-      "Critical",
-
     oldCode:
-      "const data = user.profile.name;",
+      'console.error("Error fetching data:", error);',
 
-    newCode:
-      'const data = user?.profile?.name ?? "";'
+    newCode: [
+      "if (error instanceof Error) {",
+      '  console.error("Error fetching data:", error.message);',
+      "} else {",
+      '  console.error("Error fetching data:", error);',
+      "}"
+    ]
   },
 
-  "undefined-variable": {
+  "return-type": {
     title:
-      "Undefined variable",
+      "Missing return type on function",
 
-    file:
-      "api.ts",
+    description:
+      "Add explicit return type",
 
-    line:
-      87,
-
-    severity:
-      "Critical",
-
-    oldCode:
-      "return response.data;",
-
-    newCode:
-      "return response?.data ?? null;"
-  },
-
-  "rerender": {
-    title:
-      "Unnecessary re-render",
-
-    file:
-      "Home.tsx",
-
-    line:
-      61,
+    line: 5,
 
     severity:
       "Warning",
 
-    oldCode:
-      "const value = calculate(data);",
-
-    newCode:
-      "const value = useMemo(() => calculate(data), [data]);"
-  },
-
-  "dependency": {
-    title:
-      "Missing dependency",
-
     file:
-      "useEffect",
-
-    line:
-      24,
-
-    severity:
-      "Warning",
+      "App.tsx",
 
     oldCode:
-      "useEffect(() => loadData(), []);",
+      "function getData() {",
 
-    newCode:
-      "useEffect(() => loadData(), [loadData]);"
+    newCode: [
+      "function getData(): Promise<Data> {"
+    ]
   },
 
-  "conditional": {
+  "api": {
     title:
-      "Simplify conditional logic",
+      "API call not optimized",
 
-    file:
-      "utils.ts",
+    description:
+      "Consider adding loading state cleanup",
 
-    line:
-      19,
+    line: 8,
 
     severity:
       "Suggestion",
 
+    file:
+      "api.ts",
+
     oldCode:
-      "if (value === true) return true;",
+      "const response = await fetch(url);",
 
-    newCode:
-      "return Boolean(value);"
+    newCode: [
+      "setLoading(true);",
+      "",
+      "try {",
+      "  const response = await fetch(url);",
+      "  return await response.json();",
+      "} finally {",
+      "  setLoading(false);",
+      "}"
+    ]
+  },
+
+  "any-type": {
+    title:
+      "Use of any type",
+
+    description:
+      "Consider using proper TypeScript types",
+
+    line: 4,
+
+    severity:
+      "Suggestion",
+
+    file:
+      "types.ts",
+
+    oldCode:
+      "const result: any = response;",
+
+    newCode: [
+      "const result: ApiResponse = response;"
+    ]
+  },
+
+  "component": {
+    title:
+      "Component can be broken down",
+
+    description:
+      "Consider splitting into smaller components",
+
+    line: 24,
+
+    severity:
+      "Suggestion",
+
+    file:
+      "Home.tsx",
+
+    oldCode:
+      "return <LargeComponent />;",
+
+    newCode: [
+      "return (",
+      "  <PageLayout>",
+      "    <Header />",
+      "    <Content />",
+      "  </PageLayout>",
+      ");"
+    ]
   }
-
 };
 
 
 /* =========================
-   TAB MANAGEMENT
+   THEME
+========================= */
+
+function getSavedTheme() {
+  try {
+    const saved =
+      localStorage.getItem(
+        "vector-o-theme"
+      );
+
+    const allowed = [
+      "dark",
+      "light",
+      "system",
+      "vscode-dark",
+      "vscode-light",
+      "vscode-contrast"
+    ];
+
+    if (
+      saved &&
+      allowed.includes(saved)
+    ) {
+      return saved;
+    }
+  } catch {}
+
+  return "dark";
+}
+
+
+function saveTheme(theme) {
+  try {
+    localStorage.setItem(
+      "vector-o-theme",
+      theme
+    );
+  } catch {}
+}
+
+
+function getSystemTheme() {
+  if (
+    window.matchMedia &&
+    window.matchMedia(
+      "(prefers-color-scheme: light)"
+    ).matches
+  ) {
+    return "light";
+  }
+
+  return "dark";
+}
+
+
+function applyTheme(theme) {
+  const themes = [
+    "light",
+    "vscode-dark",
+    "vscode-light",
+    "vscode-contrast"
+  ];
+
+  document.body.classList.remove(
+    "light",
+    "vscode-dark",
+    "vscode-light",
+    "vscode-contrast"
+  );
+
+  if (theme === "system") {
+    const systemTheme =
+      getSystemTheme();
+
+    if (systemTheme === "light") {
+      document.body.classList.add(
+        "light"
+      );
+    }
+  } else if (themes.includes(theme)) {
+    document.body.classList.add(
+      theme
+    );
+  }
+
+  themeOptions.forEach(
+    (option) => {
+      const active =
+        option.dataset.theme ===
+        theme;
+
+      option.classList.toggle(
+        "active",
+        active
+      );
+
+      const check =
+        option.querySelector(
+          "span:last-child"
+        );
+
+      if (check) {
+        check.textContent =
+          active ? "✓" : "";
+      }
+    }
+  );
+
+  saveTheme(theme);
+}
+
+
+function initializeTheme() {
+  const theme =
+    getSavedTheme();
+
+  applyTheme(theme);
+}
+
+
+themeOptions.forEach(
+  (option) => {
+    option.addEventListener(
+      "click",
+      () => {
+        const theme =
+          option.dataset.theme;
+
+        if (!theme) {
+          return;
+        }
+
+        applyTheme(theme);
+
+        themePanel.classList.add(
+          "hidden"
+        );
+
+        menuPanel.classList.add(
+          "hidden"
+        );
+
+        showToast(
+          `Theme changed to ${
+            theme.charAt(0).toUpperCase() +
+            theme.slice(1)
+          }.`
+        );
+      }
+    );
+  }
+);
+
+
+if (window.matchMedia) {
+  const systemTheme =
+    window.matchMedia(
+      "(prefers-color-scheme: light)"
+    );
+
+  systemTheme.addEventListener(
+    "change",
+    () => {
+      if (
+        getSavedTheme() ===
+        "system"
+      ) {
+        applyTheme(
+          "system"
+        );
+      }
+    }
+  );
+}
+
+
+/* =========================
+   MENU
+========================= */
+
+function closeMenus() {
+  menuPanel.classList.add(
+    "hidden"
+  );
+
+  themePanel.classList.add(
+    "hidden"
+  );
+}
+
+
+function toggleMenu() {
+  const wasHidden =
+    menuPanel.classList.contains(
+      "hidden"
+    );
+
+  closeMenus();
+
+  if (wasHidden) {
+    menuPanel.classList.remove(
+      "hidden"
+    );
+  }
+}
+
+
+if (menuButton) {
+  menuButton.addEventListener(
+    "click",
+    (event) => {
+      event.stopPropagation();
+
+      toggleMenu();
+    }
+  );
+}
+
+
+document
+  .querySelectorAll(".menu-item")
+  .forEach(
+    (item) => {
+      item.addEventListener(
+        "click",
+        () => {
+          const action =
+            item.dataset.menu;
+
+          if (action === "theme") {
+            themePanel.classList.toggle(
+              "hidden"
+            );
+
+            return;
+          }
+
+          closeMenus();
+
+          if (action === "settings") {
+            vscode.postMessage({
+              type: "settings"
+            });
+
+            showToast(
+              "VECTOR-Ø settings are coming soon."
+            );
+
+            return;
+          }
+
+          if (action === "history") {
+            vscode.postMessage({
+              type: "clearHistory"
+            });
+
+            showToast(
+              "Analysis history cleared."
+            );
+
+            return;
+          }
+
+          if (action === "export") {
+            vscode.postMessage({
+              type: "exportReport"
+            });
+
+            showToast(
+              "Preparing analysis report..."
+            );
+
+            return;
+          }
+
+          if (action === "about") {
+            showToast(
+              "VECTOR-Ø AI Coding Agent"
+            );
+          }
+        }
+      );
+    }
+  );
+
+
+document.addEventListener(
+  "click",
+  (event) => {
+    if (
+      !menuPanel.contains(
+        event.target
+      ) &&
+      !themePanel.contains(
+        event.target
+      ) &&
+      !menuButton.contains(
+        event.target
+      )
+    ) {
+      closeMenus();
+    }
+  }
+);
+
+
+/* =========================
+   TABS
 ========================= */
 
 function activateTab(
   tabName
 ) {
-
   activeTab =
     tabName || "review";
 
   tabs.forEach(
     (tab) => {
-
-      const isActive =
-        tab.dataset.tab ===
-        activeTab;
-
       tab.classList.toggle(
         "active",
-        isActive
+        tab.dataset.tab ===
+          activeTab
       );
-
     }
   );
-
-}
-
-
-function sendTab(
-  tabName
-) {
-
-  activateTab(tabName);
-
-  vscode.postMessage({
-    type: "tab",
-    tab: tabName
-  });
-
 }
 
 
 tabs.forEach(
   (tab) => {
-
     tab.addEventListener(
       "click",
       () => {
-
         const tabName =
           tab.dataset.tab;
 
@@ -224,49 +547,54 @@ tabs.forEach(
           return;
         }
 
-        sendTab(tabName);
+        /*
+         * CHAT
+         *
+         * Chat is not a normal
+         * Review tab. It opens
+         * chat.html inside the
+         * same VECTOR-Ø webview.
+         */
 
+        if (
+          tabName === "chat"
+        ) {
+          vscode.postMessage({
+            type: "openChat"
+          });
+
+          return;
+        }
+
+        activateTab(
+          tabName
+        );
+
+        vscode.postMessage({
+          type: "tab",
+          tab: tabName
+        });
+
+        if (
+          tabName !== "review"
+        ) {
+          showToast(
+            `${capitalize(tabName)} mode selected.`
+          );
+        }
       }
     );
-
   }
 );
 
 
 /* =========================
-   ISSUE MANAGEMENT
+   ISSUE SELECTION
 ========================= */
 
 function selectIssue(
   issueId
 ) {
-
-  selectedIssue =
-    issueId;
-
-  issues.forEach(
-    (issue) => {
-
-      issue.classList.toggle(
-        "selected",
-        issue.dataset.issue ===
-          issueId
-      );
-
-    }
-  );
-
-  updateSuggestedFix(
-    issueId
-  );
-
-}
-
-
-function updateSuggestedFix(
-  issueId
-) {
-
   const data =
     issueData[issueId];
 
@@ -274,6 +602,28 @@ function updateSuggestedFix(
     return;
   }
 
+  selectedIssue =
+    issueId;
+
+  issues.forEach(
+    (issue) => {
+      issue.classList.toggle(
+        "selected",
+        issue.dataset.issue ===
+          issueId
+      );
+    }
+  );
+
+  updateSuggestedFix(
+    data
+  );
+}
+
+
+function updateSuggestedFix(
+  data
+) {
   const diff =
     document.querySelector(
       ".diff"
@@ -283,46 +633,89 @@ function updateSuggestedFix(
     return;
   }
 
-  diff.innerHTML = `
-    <div class="diff-line removed">
-      <span class="diff-symbol">−</span>
-      <code>${escapeHtml(
-        data.oldCode
-      )}</code>
-    </div>
+  if (fixLine) {
+    fixLine.textContent =
+      `(Line ${data.line})`;
+  }
 
-    <div class="diff-line added">
-      <span class="diff-symbol">+</span>
-      <code>${escapeHtml(
-        data.newCode
-      )}</code>
-    </div>
+  const removed =
+    document.createElement(
+      "div"
+    );
+
+  removed.className =
+    "diff-line removed";
+
+  removed.innerHTML = `
+    <span class="diff-symbol">−</span>
+    <code>${escapeHtml(
+      data.oldCode
+    )}</code>
   `;
 
+  diff.innerHTML = "";
+
+  diff.appendChild(
+    removed
+  );
+
+  data.newCode.forEach(
+    (line) => {
+      const added =
+        document.createElement(
+          "div"
+        );
+
+      added.className =
+        "diff-line added";
+
+      added.innerHTML = `
+        <span class="diff-symbol">+</span>
+        <code>${escapeHtml(
+          line
+        )}</code>
+      `;
+
+      diff.appendChild(
+        added
+      );
+    }
+  );
 }
 
 
 function escapeHtml(
   value
 ) {
-
-  return value
-    .replaceAll("&", "&amp;")
-    .replaceAll("<", "&lt;")
-    .replaceAll(">", "&gt;")
-    .replaceAll('"', "&quot;")
-    .replaceAll("'", "&#039;");
-
+  return String(value)
+    .replaceAll(
+      "&",
+      "&amp;"
+    )
+    .replaceAll(
+      "<",
+      "&lt;"
+    )
+    .replaceAll(
+      ">",
+      "&gt;"
+    )
+    .replaceAll(
+      '"',
+      "&quot;"
+    )
+    .replaceAll(
+      "'",
+      "&#039;"
+    );
 }
 
 
 issues.forEach(
   (issue) => {
-
     issue.addEventListener(
       "click",
       () => {
-
         const issueId =
           issue.dataset.issue;
 
@@ -330,11 +723,11 @@ issues.forEach(
           return;
         }
 
-        selectIssue(issueId);
-
+        selectIssue(
+          issueId
+        );
       }
     );
-
   }
 );
 
@@ -344,88 +737,120 @@ issues.forEach(
 ========================= */
 
 function setAnalyzing() {
-
   if (!analysisStatus) {
     return;
   }
 
-  analysisStatus.classList.remove(
-    "completed"
-  );
-
-  analysisStatus.classList.add(
-    "analyzing"
-  );
-
   analysisStatus.innerHTML = `
-    <span class="status-dot"></span>
-    <span>Analyzing</span>
-  `;
+    <span
+      class="status-check"
+      style="
+        background:#45bfff;
+        color:#07131f;
+      "
+    >
+      ◌
+    </span>
 
+    <span>
+      Analyzing...
+    </span>
+  `;
 }
 
 
 function setCompleted(
   duration
 ) {
-
   if (!analysisStatus) {
     return;
   }
 
-  analysisStatus.classList.remove(
-    "analyzing"
-  );
-
-  analysisStatus.classList.add(
-    "completed"
-  );
-
   analysisStatus.innerHTML = `
-    <span class="status-dot"></span>
-    <span>Completed</span>
-  `;
+    <span class="status-check">
+      ✓
+    </span>
 
-  if (analysisTime) {
-
-    analysisTime.textContent =
-      `Completed in ${
+    <span>
+      Completed in ${
         duration || "2.3s"
-      }`;
-
-  }
-
+      }
+    </span>
+  `;
 }
 
 
 function runAgent() {
-
   setAnalyzing();
 
   vscode.postMessage({
     type: "runAgent"
   });
-
 }
 
 
 if (refreshButton) {
-
   refreshButton.addEventListener(
     "click",
     runAgent
   );
-
 }
 
 
-if (scanButton) {
-
-  scanButton.addEventListener(
+if (newAgentButton) {
+  newAgentButton.addEventListener(
     "click",
-    runAgent
-  );
+    () => {
+      selectedIssue =
+        "null-reference";
 
+      selectIssue(
+        selectedIssue
+      );
+
+      activateTab(
+        "review"
+      );
+
+      runAgent();
+    }
+  );
+}
+
+
+/* =========================
+   FULLSCREEN
+========================= */
+
+if (fullscreenButton) {
+  fullscreenButton.addEventListener(
+    "click",
+    () => {
+      vscode.postMessage({
+        type: "fullscreen"
+      });
+
+      showToast(
+        "Use the VS Code panel controls to resize VECTOR-Ø."
+      );
+    }
+  );
+}
+
+
+/* =========================
+   CLOSE
+========================= */
+
+if (closeButton) {
+  closeButton.addEventListener(
+    "click",
+    () => {
+      vscode.postMessage({
+        type: "close"
+      });
+    }
+  );
 }
 
 
@@ -434,11 +859,9 @@ if (scanButton) {
 ========================= */
 
 if (applyFixButton) {
-
   applyFixButton.addEventListener(
     "click",
     () => {
-
       const data =
         issueData[
           selectedIssue
@@ -450,20 +873,28 @@ if (applyFixButton) {
 
       vscode.postMessage({
         type: "applyFix",
-        issue: selectedIssue,
-        file: data.file,
-        line: data.line,
-        oldCode: data.oldCode,
-        newCode: data.newCode
+
+        issue:
+          selectedIssue,
+
+        file:
+          data.file,
+
+        line:
+          data.line,
+
+        oldCode:
+          data.oldCode,
+
+        newCode:
+          data.newCode.join("\n")
       });
 
       showToast(
         "VECTOR-Ø is applying the suggested fix..."
       );
-
     }
   );
-
 }
 
 
@@ -472,11 +903,9 @@ if (applyFixButton) {
 ========================= */
 
 if (explainButton) {
-
   explainButton.addEventListener(
     "click",
     () => {
-
       const data =
         issueData[
           selectedIssue
@@ -484,18 +913,22 @@ if (explainButton) {
 
       vscode.postMessage({
         type: "explain",
-        issue: selectedIssue,
+
+        issue:
+          selectedIssue,
+
         title:
-          data?.title || ""
+          data?.title || "",
+
+        description:
+          data?.description || ""
       });
 
       activateTab(
         "explain"
       );
-
     }
   );
-
 }
 
 
@@ -504,34 +937,17 @@ if (explainButton) {
 ========================= */
 
 if (moreOptionsButton) {
-
   moreOptionsButton.addEventListener(
     "click",
     () => {
-
       vscode.postMessage({
-        type: "moreOptions"
-      });
+        type: "moreOptions",
 
+        issue:
+          selectedIssue
+      });
     }
   );
-
-}
-
-
-if (headerMoreButton) {
-
-  headerMoreButton.addEventListener(
-    "click",
-    () => {
-
-      vscode.postMessage({
-        type: "moreOptions"
-      });
-
-    }
-  );
-
 }
 
 
@@ -540,11 +956,9 @@ if (headerMoreButton) {
 ========================= */
 
 if (copyFixButton) {
-
   copyFixButton.addEventListener(
     "click",
     async () => {
-
       const data =
         issueData[
           selectedIssue
@@ -555,40 +969,121 @@ if (copyFixButton) {
       }
 
       try {
-
         await navigator.clipboard.writeText(
-          data.newCode
+          data.newCode.join("\n")
         );
 
         showToast(
           "Suggested fix copied."
         );
-
       } catch {
-
         showToast(
           "Unable to copy fix."
         );
-
       }
-
     }
   );
-
 }
+
+
+/* =========================
+   VS CODE MESSAGES
+========================= */
+
+window.addEventListener(
+  "message",
+  (event) => {
+    const message =
+      event.data;
+
+    if (!message) {
+      return;
+    }
+
+    if (
+      message.type ===
+      "analysisStatus"
+    ) {
+      if (
+        message.status ===
+        "analyzing"
+      ) {
+        setAnalyzing();
+      }
+
+      if (
+        message.status ===
+        "completed"
+      ) {
+        setCompleted(
+          message.duration
+        );
+      }
+    }
+
+    if (
+      message.type ===
+      "analysisResult"
+    ) {
+      if (issueCount) {
+        issueCount.textContent =
+          String(
+            message.total ??
+              5
+          );
+      }
+
+      if (criticalCount) {
+        criticalCount.textContent =
+          String(
+            message.critical ??
+              2
+          );
+      }
+    }
+
+    if (
+      message.type ===
+      "activateTab"
+    ) {
+      activateTab(
+        message.tab
+      );
+    }
+
+    if (
+      message.type ===
+      "fixApplied"
+    ) {
+      showToast(
+        "Fix applied successfully."
+      );
+    }
+
+    if (
+      message.type ===
+      "error"
+    ) {
+      showToast(
+        message.message ||
+          "VECTOR-Ø encountered an error."
+      );
+    }
+  }
+);
 
 
 /* =========================
    TOAST
 ========================= */
 
-let toastTimer;
-
 function showToast(
   message
 ) {
-
-  if (!toast || !toastMessage) {
+  if (
+    !toast ||
+    !toastMessage
+  ) {
     return;
   }
 
@@ -606,133 +1101,30 @@ function showToast(
   toastTimer =
     setTimeout(
       () => {
-
         toast.classList.remove(
           "show"
         );
-
       },
       2600
     );
-
 }
 
 
-/* =========================
-   VS CODE MESSAGES
-========================= */
-
-window.addEventListener(
-  "message",
-  (event) => {
-
-    const message =
-      event.data;
-
-    if (!message) {
-      return;
-    }
-
-
-    if (
-      message.type ===
-      "activateTab"
-    ) {
-
-      activateTab(
-        message.tab
-      );
-
-    }
-
-
-    if (
-      message.type ===
-      "analysisStatus"
-    ) {
-
-      if (
-        message.status ===
-        "analyzing"
-      ) {
-
-        setAnalyzing();
-
-      }
-
-      if (
-        message.status ===
-        "completed"
-      ) {
-
-        setCompleted(
-          message.duration
-        );
-
-      }
-
-    }
-
-
-    if (
-      message.type ===
-      "analysisResult"
-    ) {
-
-      if (issueCount) {
-
-        issueCount.textContent =
-          String(
-            message.total ??
-            5
-          );
-
-      }
-
-      if (criticalCount) {
-
-        criticalCount.textContent =
-          String(
-            message.critical ??
-            2
-          );
-
-      }
-
-    }
-
-
-    if (
-      message.type ===
-      "fixApplied"
-    ) {
-
-      showToast(
-        "Fix applied successfully."
-      );
-
-    }
-
-
-    if (
-      message.type ===
-      "error"
-    ) {
-
-      showToast(
-        message.message ||
-        "VECTOR-Ø encountered an error."
-      );
-
-    }
-
-  }
-);
+function capitalize(
+  value
+) {
+  return (
+    value.charAt(0).toUpperCase() +
+    value.slice(1)
+  );
+}
 
 
 /* =========================
    INITIAL STATE
 ========================= */
+
+initializeTheme();
 
 activateTab(
   "review"
