@@ -16,7 +16,4 @@ export class AgentviewProviderNew implements vscode.WebviewViewProvider {
         context: vscode.WebviewViewResolveContext,
         _token: vscode.CancellationToken
     ): void {
-        this._view = webviewView;
-
-
 }
