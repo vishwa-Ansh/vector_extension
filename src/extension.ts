@@ -1,5 +1,7 @@
 import * as vscode from "vscode";
 import { AgentViewProvider } from "./agent/AgentViewProvider";
+ 
+console.log(vscode);
 
 export function activate(
 	context: vscode.ExtensionContext

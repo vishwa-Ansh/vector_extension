@@ -28,6 +28,7 @@
                     </div>
 
                     <div class="chat-title">
+
                         <div class="title-row">
                             <h1>VECTOR-Ø</h1>
                             <span class="online-dot"></span>
@@ -36,12 +37,12 @@
                         <span class="subtitle">
                             AI Coding Agent
                         </span>
+
                     </div>
 
                 </div>
 
             </div>
-
 
             <div class="chat-actions">
 
@@ -100,6 +101,7 @@
                         </div>
 
                         <div class="suggestion-content">
+
                             <strong>
                                 Explain this file
                             </strong>
@@ -107,6 +109,7 @@
                             <small>
                                 Understand the code and logic
                             </small>
+
                         </div>
 
                         <span class="suggestion-arrow">
@@ -123,6 +126,7 @@
                         </div>
 
                         <div class="suggestion-content">
+
                             <strong>
                                 Find bugs
                             </strong>
@@ -130,6 +134,7 @@
                             <small>
                                 Detect issues in your code
                             </small>
+
                         </div>
 
                         <span class="suggestion-arrow">
@@ -146,6 +151,7 @@
                         </div>
 
                         <div class="suggestion-content">
+
                             <strong>
                                 Fix an error
                             </strong>
@@ -153,6 +159,7 @@
                             <small>
                                 Find the cause and fix it
                             </small>
+
                         </div>
 
                         <span class="suggestion-arrow">
@@ -169,6 +176,7 @@
                         </div>
 
                         <div class="suggestion-content">
+
                             <strong>
                                 Write tests
                             </strong>
@@ -176,6 +184,7 @@
                             <small>
                                 Generate useful test cases
                             </small>
+
                         </div>
 
                         <span class="suggestion-arrow">
@@ -233,7 +242,7 @@
                         </span>
 
                         <span id="context-file">
-                            Current file
+                            No active file
                         </span>
 
                     </div>
@@ -242,7 +251,9 @@
 
 
                 <button id="clear-context" class="context-clear" title="Remove context" aria-label="Remove context">
+
                     ×
+
                 </button>
 
             </div>
@@ -264,26 +275,38 @@
 
                         <button id="attach-code" class="composer-button" title="Add code context"
                             aria-label="Add code context">
+
                             ＋
+
                         </button>
+
 
                         <button id="mention-file" class="composer-button" title="Mention file"
                             aria-label="Mention file">
+
                             @
+
                         </button>
 
                     </div>
 
 
                     <div class="composer-status">
+
                         <span class="status-dot"></span>
-                        Ready
+
+                        <span>
+                            Ready
+                        </span>
+
                     </div>
 
 
                     <button id="send-message" class="send-button" title="Send message" aria-label="Send message"
                         disabled>
+
                         ↑
+
                     </button>
 
                 </div>
@@ -315,17 +338,35 @@
     <div id="chat-menu-panel" class="chat-menu-panel hidden">
 
         <div class="menu-header">
-            <span>Conversation</span>
+            <span>
+                Conversation
+            </span>
         </div>
 
+
         <button data-action="clear">
-            <span class="menu-icon">⌫</span>
-            <span>Clear conversation</span>
+
+            <span class="menu-icon">
+                ⌫
+            </span>
+
+            <span>
+                Clear conversation
+            </span>
+
         </button>
 
+
         <button data-action="export">
-            <span class="menu-icon">↗</span>
-            <span>Export conversation</span>
+
+            <span class="menu-icon">
+                ↗
+            </span>
+
+            <span>
+                Export conversation
+            </span>
+
         </button>
 
     </div>

@@ -4,45 +4,54 @@
   "description": "Premium AI coding agent for VS Code",
   "version": "0.0.1",
   "publisher": "vector-o",
+  "icon": "media/icon.png",
+  "license": "MIT",
   "engines": {
     "vscode": "^1.106.0"
   },
   "categories": [
     "Other"
   ],
+  "keywords": [
+    "AI",
+    "AI agent",
+    "coding assistant",
+    "code review",
+    "developer tools",
+    "VS Code"
+  ],
   "activationEvents": [
     "onView:vector-o.agent",
     "onCommand:vector-o.openAgent"
   ],
   "main": "./dist/extension.js",
-  "icon": "src/ui/assets/vector-icon.svg",
- "contributes": {
-  "viewsContainers": {
-    "secondarySidebar": [
+  "contributes": {
+    "viewsContainers": {
+      "secondarySidebar": [
+        {
+          "id": "vector-o-agent",
+          "title": "VECTOR-Ø",
+          "icon": "media/icon.png"
+        }
+      ]
+    },
+    "views": {
+      "vector-o-agent": [
+        {
+          "id": "vector-o.agent",
+          "name": "VECTOR-Ø AI Agent",
+          "type": "webview",
+          "visibility": "visible"
+        }
+      ]
+    },
+    "commands": [
       {
-        "id": "vector-o-agent",
-        "title": "VECTOR-Ø",
-        "icon": "src/ui/assets/vector-icon.svg"
+        "command": "vector-o.openAgent",
+        "title": "VECTOR-Ø: Open AI Agent"
       }
     ]
   },
-  "views": {
-    "vector-o-agent": [
-      {
-        "id": "vector-o.agent",
-        "name": "VECTOR-Ø AI Agent",
-        "type": "webview",
-        "visibility": "visible"
-      }
-    ]
-  },
-  "commands": [
-    {
-      "command": "vector-o.openAgent",
-      "title": "VECTOR-Ø: Open AI Agent"
-    }
-  ]
-},
   "scripts": {
     "vscode:prepublish": "npm run compile",
     "compile": "npm run check-types && npm run lint && node esbuild.js",
