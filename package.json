@@ -1,9 +1,12 @@
 {
+  
   "name": "vector-o",
-  "displayName": "VECTOR-Ø",
-  "description": "Premium AI coding agent for VS Code",
+  "displayName": "VECTOR BOT",
   "version": "0.0.1",
-  "publisher": "vector-o",
+  "publisher": "VECTORBOT",
+
+  "description": "Premium AI coding agent for VS Code",
+  
   "icon": "media/icon.png",
   "license": "MIT",
   "engines": {
