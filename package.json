@@ -1,12 +1,13 @@
 {
-  
   "name": "vector-o",
   "displayName": "VECTOR BOT",
-  "version": "0.0.1",
+  "version": "0.0.3",
   "publisher": "VECTORBOT",
-
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/vishwa-Ansh/vector_extension.git"
+  },
   "description": "Premium AI coding agent for VS Code",
-  
   "icon": "media/icon.png",
   "license": "MIT",
   "engines": {

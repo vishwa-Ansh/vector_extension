@@ -234,7 +234,6 @@ select {
 
 .agent-header {
     min-height: 112px;
-
     display: flex;
     align-items: center;
     justify-content: space-between;
